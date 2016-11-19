@@ -13,9 +13,6 @@ function MotionSensorScanner(serverIpPort, myName) {
     this.moving = {};
 
     this.updateConf = function(beacons) {
-        this.minorWhitelist = {};
-        this.majors = {};
-        this.lasts = {};
         for (var minor in this.moving) {
             if (this.moving.hasOwnProperty(minor)) {
                 if (this.moving[minor]) {
@@ -24,6 +21,9 @@ function MotionSensorScanner(serverIpPort, myName) {
             }
         }
         this.moving = {};
+        this.majors = {};
+        this.minorWhitelist = {};
+        this.lasts = {};
         let beaconsNumber = beacons.length;
         for (var i = 0; i < beaconsNumber; i++) {
             this.addSensor(beacons[i].minor, beacons[i].major);
@@ -40,7 +40,7 @@ function MotionSensorScanner(serverIpPort, myName) {
     this.sendEvent = function (minor, event) {
         http({
             method: 'POST',
-            uri: 'http://localhost:8080/sensors/name/event',
+            uri: 'http://'+serverIpPort+'/sensors/'+myName+'/event',
             json: {
                 major: this.majors[minor],
                 minor: minor,

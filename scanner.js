@@ -10,7 +10,7 @@ let scannerName = process.argv[3] ? process.argv[3] : "name";
 console.log(serverIpPort + "/" + scannerName);
 
 function startScanner() {
-    scanner = new MotionSensorScanner(serverIpPort, serverIpPort);
+    scanner = new MotionSensorScanner(serverIpPort, scannerName);
     scanner.scan();
 }
 
@@ -32,7 +32,7 @@ startScanner();
 
 http({
 	method: 'POST',
-	uri: 'http://' + serverIpPort + '/sensors/',
+	uri: 'http://' + serverIpPort + '/sensors',
 	json: {
 		name: scannerName
 	}
