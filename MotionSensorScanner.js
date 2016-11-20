@@ -13,10 +13,11 @@ function MotionSensorScanner(serverIpPort, myName) {
     this.moving = {};
 
     this.updateConf = function(beacons) {
+        let willMove = {}
         for (var minor in this.moving) {
             if (this.moving.hasOwnProperty(minor)) {
                 if (this.moving[minor]) {
-                    this.sendEvent(minor, "stopped");
+                    willMove[minor] = true;
                 }
             }
         }
@@ -27,6 +28,9 @@ function MotionSensorScanner(serverIpPort, myName) {
         let beaconsNumber = beacons.length;
         for (var i = 0; i < beaconsNumber; i++) {
             this.addSensor(beacons[i].minor, beacons[i].major);
+            if (willMove[beacons[i].minor]) {
+                this.moving[beacons[i].minor] = true;
+            }
         }
     }
 
@@ -57,7 +61,7 @@ function MotionSensorScanner(serverIpPort, myName) {
         if (this.moving[minor]) {
             this.sendEvent(minor, "moved");
         } else {
-            this.sendEvent(minor, "stopped");
+            //this.sendEvent(minor, "stopped");
         }
     }
 

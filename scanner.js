@@ -39,6 +39,11 @@ http({
 }).then(function (body){
 	setInterval(queryConf, 10000);
 }).catch(function (err){
-	console.log(err);
-	process.exit();
+	if (err.statusCode == 409) {
+		console.log("Already registered.");
+		setInterval(queryConf, 10000);
+	} else {
+		console.log(err);
+		process.exit();
+	}
 })
